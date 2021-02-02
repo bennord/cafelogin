@@ -48,4 +48,5 @@ def ensure_portal_connection():
         print("Login failed")
 
 
-ensure_portal_connection()
+def run():
+    ensure_portal_connection()
