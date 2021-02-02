@@ -41,5 +41,5 @@ Run the command once with an internet connection to install the web-driver to th
 [WDM] - There is no [linux64] geckodriver for browser  in cache
 [WDM] - Getting latest mozilla release info for v0.29.0
 [WDM] - Trying to download new driver from https://github.com/mozilla/geckodriver/releases/download/v0.29.0/geckodriver-v0.29.0-linux64.tar.gz
-[WDM] - Driver has been saved in cache [/home/bennord/.wdm/drivers/geckodriver/linux64/v0.29.0]
+[WDM] - Driver has been saved in cache [/home/me/.wdm/drivers/geckodriver/linux64/v0.29.0]
 ```
