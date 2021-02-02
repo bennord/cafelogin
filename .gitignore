@@ -1,1 +1,5 @@
 geckodriver.log
+
+# tool caches
+.mypy_cache/
+__pycache__/
