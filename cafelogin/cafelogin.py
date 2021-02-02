@@ -1,4 +1,5 @@
 import requests
+from contextlib import contextmanager
 from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -9,13 +10,26 @@ from webdriver_manager.firefox import GeckoDriverManager
 from typing import Sequence
 
 DETECT_PORTAL_URL = "http://detectportal.firefox.com/"
+TRY_PORTAL_URL = "https://www.google.com/"
+
+
+@contextmanager
+def create_webdriver_context():
+    options = webdriver.firefox.options.Options()
+    options.headless = True
+    with webdriver.Firefox(
+        options=options,
+        executable_path=GeckoDriverManager(
+            version="v0.29.0", cache_valid_range=100
+        ).install(),
+    ) as d:
+        yield d
 
 
 def wait_url_change(url: str, driver: WebDriver):
     wait = WebDriverWait(driver, 3)
     wait.until(expected_conditions.url_changes(url))
     url = driver.current_url
-    print(f"Url: {url}")
     return url
 
 
@@ -25,21 +39,23 @@ def portal_connected():
 
 
 def try_portal_login():
-    with webdriver.Firefox(
-        executable_path=GeckoDriverManager(
-            version="v0.29.0", cache_valid_range=100
-        ).install()
-    ) as driver:
+    with create_webdriver_context() as driver:
         url = driver.current_url
-        print(f"Nav to: {DETECT_PORTAL_URL}")
-        driver.get(DETECT_PORTAL_URL)
-        url = wait_url_change(url, wait)
+        print(f"Url: {url}")
+        print(f"Test navigation to: {TRY_PORTAL_URL}")
+        driver.get(TRY_PORTAL_URL)
+        url = wait_url_change(url, driver)
+        if url == TRY_PORTAL_URL:
+            return
+        print(f"Url: {url}")
         print(f"Click button_next_page")
         driver.find_element_by_id("button_next_page").click()
-        url = wait_url_change(url, wait)
+        url = wait_url_change(url, driver)
+        print(f"Url: {url}")
         print(f"Click button_accept")
         driver.find_element_by_id("button_accept").click()
-        url = wait_url_change(url, wait)
+        url = wait_url_change(url, driver)
+        print(f"Url: {url}")
 
 
 def ensure_portal_connection():
