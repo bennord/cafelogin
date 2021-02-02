@@ -37,6 +37,8 @@ cafelogin --driver-version "v0.28.0"
 Run the command once with an internet connection to install the web-driver to the cache.
 
 ```
+cafelogin
+
 [WDM] - ====== WebDriver manager ======
 [WDM] - There is no [linux64] geckodriver for browser  in cache
 [WDM] - Getting latest mozilla release info for v0.29.0
