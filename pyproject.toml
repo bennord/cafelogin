@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "wifi-portal-tools"
+name = "cafelogin"
 version = "0.1.0"
 description = ""
 authors = ["bennord <ben.nordstrom@gengo.com>"]
