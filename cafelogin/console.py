@@ -1,3 +1,5 @@
+import sys
+import requests
 import configargparse
 import cafelogin.actions as actions
 
@@ -40,5 +42,11 @@ def run():
     )
 
     args, unused_args = parser.parse_known_args()
-    with actions.create_webdriver_context(driver_version=args.driver_version) as driver:
-        actions.ensure_portal_connection(driver=driver)
+
+    try:
+        with actions.create_webdriver_context(
+            driver_version=args.driver_version
+        ) as driver:
+            actions.ensure_portal_connection(driver=driver)
+    except requests.exceptions.ConnectionError as error:
+        sys.exit(error)
