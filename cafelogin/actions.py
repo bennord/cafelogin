@@ -46,7 +46,7 @@ def ensure_portal_connection(driver: WebDriver):
     login.try_login(driver=driver)
 
     if portal_connected():
-        print("Login succeded")
+        print("Login succeeded")
     else:
         print("Login failed")
 
@@ -65,7 +65,7 @@ def watch_portal_connection(driver: WebDriver, watch_interval: float):
             )
             login.try_login(driver=driver)
             if portal_connected():
-                print("Login succeded")
+                print("Login succeeded")
             else:
                 print("Login failed.  Exiting.")
                 return
