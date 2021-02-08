@@ -1,5 +1,6 @@
 import requests
 import time
+from datetime import datetime
 from contextlib import contextmanager
 from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -58,6 +59,10 @@ def watch_portal_connection(driver: WebDriver, watch_interval: float):
     )
     while True:
         if not portal_connected():
+            print_clr(
+                f"{Fore.YELLOW}{datetime.now()}",
+                f"{Fore.YELLOW}{Style.DIM} - Portal connection down",
+            )
             login.try_login(driver=driver)
             if portal_connected():
                 print("Login succeded")
