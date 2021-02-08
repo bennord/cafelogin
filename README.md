@@ -20,6 +20,7 @@ pip install cafelogin
 
 ```zsh
 cafelogin [-h] [-c CONFIG_FILE] [--driver-version DRIVER_VERSION] [--watch] [--watch-interval WATCH_INTERVAL]```
+```
 
 Examples:
 
