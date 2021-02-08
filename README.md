@@ -19,14 +19,16 @@ pip install cafelogin
 ## Usage
 
 ```zsh
-cafelogin [-h] [-c CONFIG_FILE] [--driver-version DRIVER_VERSION]
-```
+cafelogin [-h] [-c CONFIG_FILE] [--driver-version DRIVER_VERSION] [--watch] [--watch-interval WATCH_INTERVAL]```
 
 Examples:
 
 ```zsh
-# Check connection and login via any detected portal
+# Check portal connection and login via any detected portal
 cafelogin
+
+# Watch the portal connection continuously for changes
+cafelogin --watch
 
 # Specify a web-driver version to use
 cafelogin --driver-version "v0.28.0"
