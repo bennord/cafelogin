@@ -40,6 +40,17 @@ def run():
         default=actions.DEFAULT_DRIVER_VERSION,
         help="Specify the webdriver version to use.",
     )
+    parser.add_argument(
+        "--watch",
+        action="store_true",
+        help="Continue watching for changes in portal connectivity.",
+    )
+    parser.add_argument(
+        "--watch-interval",
+        type=int,
+        default=20,
+        help="The frequency with which to watch for portal changes.",
+    )
 
     args, unused_args = parser.parse_known_args()
 
@@ -47,6 +58,13 @@ def run():
         with actions.create_webdriver_context(
             driver_version=args.driver_version
         ) as driver:
-            actions.ensure_portal_connection(driver=driver)
+            if args.watch:
+                actions.watch_portal_connection(
+                    driver=driver, watch_interval=args.watch_interval
+                )
+            else:
+                actions.ensure_portal_connection(driver=driver)
     except requests.exceptions.ConnectionError as error:
         sys.exit(error)
+    except KeyboardInterrupt:
+        pass
