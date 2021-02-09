@@ -9,6 +9,7 @@ A python command line tool for logging into cafe wifi portals.
   - https://service.wi2.ne.jp
     - Starbucks JP
     - Wired Cafe JP
+    - Doutor JP
 
 ## Install
 
