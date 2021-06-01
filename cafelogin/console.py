@@ -1,3 +1,4 @@
+import cafelogin
 import sys
 import requests
 import configargparse
@@ -35,6 +36,11 @@ def run():
     )
     add_help_argument(parser)
     add_config_argument(parser)
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=cafelogin.__version__,
+    )
     parser.add_argument(
         "--driver-version",
         default=actions.DEFAULT_DRIVER_VERSION,

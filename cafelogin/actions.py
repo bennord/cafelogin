@@ -38,6 +38,26 @@ def portal_connected():
     return response.ok and response.text.strip() == "success"
 
 
+def print_portal_status(connected: bool):
+    if connected:
+        print_clr(
+            f"{Fore.GREEN}{datetime.now()}",
+            f"{Fore.GREEN}{Style.DIM} - Portal connection up",
+        )
+    else:
+        print_clr(
+            f"{Fore.YELLOW}{datetime.now()}",
+            f"{Fore.YELLOW}{Style.DIM} - Portal connection down",
+        )
+
+
+def portal_connected_print_if_changed(previous_state: bool):
+    current_state = portal_connected()
+    if current_state != current_state:
+        print_portal_status(current_state)
+    return current_state
+
+
 def ensure_portal_connection(driver: WebDriver):
     if portal_connected():
         print("Already connected")
@@ -57,14 +77,17 @@ def watch_portal_connection(driver: WebDriver, watch_interval: float):
         f"{Style.BRIGHT}{Fore.CYAN}{watch_interval} ",
         f"{Style.BRIGHT}seconds.  Ctrl-c to exit.",
     )
+
+    connected = portal_connected()
+    print_portal_status(connected)
+
     while True:
-        if not portal_connected():
-            print_clr(
-                f"{Fore.YELLOW}{datetime.now()}",
-                f"{Fore.YELLOW}{Style.DIM} - Portal connection down",
-            )
+        connected = portal_connected_print_if_changed(connected)
+
+        if not connected:
             login.try_login(driver=driver)
-            if portal_connected():
+            connected = portal_connected_print_if_changed(connected)
+            if connected:
                 print("Login succeeded")
             else:
                 print("Login failed.  Exiting.")
