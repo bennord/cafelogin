@@ -53,7 +53,7 @@ def print_portal_status(connected: bool):
 
 def portal_connected_print_if_changed(previous_state: bool):
     current_state = portal_connected()
-    if current_state != current_state:
+    if current_state != previous_state:
         print_portal_status(current_state)
     return current_state
 
