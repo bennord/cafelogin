@@ -4,6 +4,7 @@ A python command line tool for logging into cafe wifi portals.
 
 ### Compatibility:
 - Browser WebDriver
+  - Chrome
   - Firefox (Geckodriver)
 - Wifi Portal
   - https://service.wi2.ne.jp
@@ -19,13 +20,13 @@ pip install cafelogin
 
 ## Usage
 
-```zsh
-cafelogin [-h] [-c CONFIG_FILE] [--driver-version DRIVER_VERSION] [--watch] [--watch-interval WATCH_INTERVAL]```
+```sh
+cafelogin [-h] [-c CONFIG_FILE] [--version] [--browser {chrome,firefox}] [--chrome-driver-version CHROME_DRIVER_VERSION] [--firefox-driver-version FIREFOX_DRIVER_VERSION] [--watch] [--watch-interval WATCH_INTERVAL]
 ```
 
 Examples:
 
-```zsh
+```sh
 # Check portal connection and login via any detected portal
 cafelogin
 
