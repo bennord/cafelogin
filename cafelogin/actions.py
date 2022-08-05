@@ -5,30 +5,48 @@ from contextlib import contextmanager
 from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from typing import Sequence
 from .portals import login
+from .portals.util import DETECT_PORTAL_URL
 from .print_util import print_clr
 from colorama import Style, Fore
 
-DETECT_PORTAL_URL = "http://detectportal.firefox.com/"
-DEFAULT_DRIVER_VERSION = "v0.29.0"
+DEFAULT_CHROME_DRIVER_VERSION = "104.0.5112"
+DEFAULT_FIREFOX_DRIVER_VERSION = "v0.29.0"
 
 
-def install_webdriver(version: str = DEFAULT_DRIVER_VERSION) -> str:
-    return GeckoDriverManager(
-        version=version,
-        cache_valid_range=100,
-        print_first_line=False,
-    ).install()
+# def install_webdriver(version: str = DEFAULT_FIREFOX_DRIVER_VERSION) -> str:
+#     return GeckoDriverManager(
+#         version=version,
+#         cache_valid_range=100,
+#     ).install()
+
+
+# @contextmanager
+# def create_webdriver_context(driver_version: str = DEFAULT_FIREFOX_DRIVER_VERSION):
+#     options = webdriver.firefox.options.Options()
+#     options.headless = True
+#     with webdriver.Firefox(
+#         options=options,
+#         executable_path=install_webdriver(version=driver_version),
+#     ) as d:
+#         yield d
 
 
 @contextmanager
-def create_webdriver_context(driver_version: str = DEFAULT_DRIVER_VERSION):
-    options = webdriver.firefox.options.Options()
+def create_webdriver_context(
+    chrome_driver_version: str = DEFAULT_CHROME_DRIVER_VERSION,
+    firefox_driver_version: str = DEFAULT_FIREFOX_DRIVER_VERSION,
+):
+    options = webdriver.chrome.options.Options()
     options.headless = True
-    with webdriver.Firefox(
+    with webdriver.Chrome(
         options=options,
-        executable_path=install_webdriver(version=driver_version),
+        executable_path=ChromeDriverManager(
+            version=chrome_driver_version,
+            cache_valid_range=100,
+        ).install(),
     ) as d:
         yield d
 
