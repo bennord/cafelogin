@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cafelogin"
-version = "0.1.6"
+version = "0.2.0"
 description = "Login to wifi portals commonly found at cafes."
 authors = ["Ben Nordstrom <bennord@gmail.com>"]
 readme = "README.md"
