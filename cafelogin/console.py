@@ -42,6 +42,12 @@ def run():
         version=cafelogin.__version__,
     )
     parser.add_argument(
+        "--browser",
+        default=actions.DEFAULT_TARGET_BROWSER,
+        choices=["chrome", "firefox"],
+        help="Target browser to use.",
+    )
+    parser.add_argument(
         "--chrome-driver-version",
         default=actions.DEFAULT_CHROME_DRIVER_VERSION,
         help="Specify the chrome webdriver version to use.",
@@ -67,6 +73,7 @@ def run():
 
     try:
         with actions.create_webdriver_context(
+            target_browser=args.browser,
             chrome_driver_version=args.chrome_driver_version,
             firefox_driver_version=args.firefox_driver_version,
         ) as driver:

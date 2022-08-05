@@ -12,43 +12,39 @@ from .portals.util import DETECT_PORTAL_URL
 from .print_util import print_clr
 from colorama import Style, Fore
 
+DEFAULT_TARGET_BROWSER = "chrome"
 DEFAULT_CHROME_DRIVER_VERSION = "104.0.5112"
 DEFAULT_FIREFOX_DRIVER_VERSION = "v0.29.0"
 
 
-# def install_webdriver(version: str = DEFAULT_FIREFOX_DRIVER_VERSION) -> str:
-#     return GeckoDriverManager(
-#         version=version,
-#         cache_valid_range=100,
-#     ).install()
-
-
-# @contextmanager
-# def create_webdriver_context(driver_version: str = DEFAULT_FIREFOX_DRIVER_VERSION):
-#     options = webdriver.firefox.options.Options()
-#     options.headless = True
-#     with webdriver.Firefox(
-#         options=options,
-#         executable_path=install_webdriver(version=driver_version),
-#     ) as d:
-#         yield d
-
-
 @contextmanager
 def create_webdriver_context(
+    target_browser: str = DEFAULT_TARGET_BROWSER,
     chrome_driver_version: str = DEFAULT_CHROME_DRIVER_VERSION,
     firefox_driver_version: str = DEFAULT_FIREFOX_DRIVER_VERSION,
 ):
-    options = webdriver.chrome.options.Options()
-    options.headless = True
-    with webdriver.Chrome(
-        options=options,
-        executable_path=ChromeDriverManager(
-            version=chrome_driver_version,
-            cache_valid_range=100,
-        ).install(),
-    ) as d:
-        yield d
+    if target_browser == "firefox":
+        options = webdriver.firefox.options.Options()
+        options.headless = True
+        with webdriver.Firefox(
+            options=options,
+            executable_path=GeckoDriverManager(
+                version=firefox_driver_version,
+                cache_valid_range=100,
+            ).install(),
+        ) as d:
+            yield d
+    else:  # default target
+        options = webdriver.chrome.options.Options()
+        options.headless = True
+        with webdriver.Chrome(
+            options=options,
+            executable_path=ChromeDriverManager(
+                version=chrome_driver_version,
+                cache_valid_range=100,
+            ).install(),
+        ) as d:
+            yield d
 
 
 def portal_connected():
