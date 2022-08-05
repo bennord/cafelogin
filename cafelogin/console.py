@@ -21,7 +21,7 @@ def add_config_argument(parser: configargparse.ArgumentParser):
         "-c",
         "--config-file",
         is_config_file=True,
-        help=f"Args that start with '--' (eg. --driver-version) can also be set in a config file ({', '.join(DEFAULT_CONFIG_FILES)} or specified via -c). "
+        help=f"Args that start with '--' (eg. --firefox-driver-version) can also be set in a config file ({', '.join(DEFAULT_CONFIG_FILES)} or specified via -c). "
         + "Config file syntax allows: key=value, flag=true, stuff=[a,b,c] (details here https://goo.gl/R74nmi). "
         + "Arg precedence: commandline > config-file > defaults.",
     )
@@ -42,9 +42,14 @@ def run():
         version=cafelogin.__version__,
     )
     parser.add_argument(
-        "--driver-version",
-        default=actions.DEFAULT_DRIVER_VERSION,
-        help="Specify the webdriver version to use.",
+        "--chrome-driver-version",
+        default=actions.DEFAULT_CHROME_DRIVER_VERSION,
+        help="Specify the chrome webdriver version to use.",
+    )
+    parser.add_argument(
+        "--firefox-driver-version",
+        default=actions.DEFAULT_FIREFOX_DRIVER_VERSION,
+        help="Specify the firefox webdriver version to use.",
     )
     parser.add_argument(
         "--watch",
@@ -62,7 +67,8 @@ def run():
 
     try:
         with actions.create_webdriver_context(
-            driver_version=args.driver_version
+            chrome_driver_version=args.chrome_driver_version,
+            firefox_driver_version=args.firefox_driver_version,
         ) as driver:
             if args.watch:
                 actions.watch_portal_connection(

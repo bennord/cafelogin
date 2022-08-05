@@ -3,15 +3,14 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from typing import TypedDict, Callable, Sequence
 from . import portal_list
 from .util import wait_url_change
-
-TRY_PORTAL_URL = "https://www.google.com/"
+from .util import DETECT_PORTAL_URL
 
 
 def try_login(driver: WebDriver) -> None:
     url = driver.current_url
-    driver.get(TRY_PORTAL_URL)
+    driver.get(DETECT_PORTAL_URL)
     url = wait_url_change(url, driver)
-    if url == TRY_PORTAL_URL:
+    if url == DETECT_PORTAL_URL:
         print("Already connected")
         return
 
