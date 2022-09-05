@@ -34,7 +34,7 @@ cafelogin
 cafelogin --watch
 
 # Specify a web-driver version to use
-cafelogin --driver-version "v0.28.0"
+cafelogin --browser firefox --firefox-driver-version "v0.28.0"
 ```
 
 ## WebDriver cache

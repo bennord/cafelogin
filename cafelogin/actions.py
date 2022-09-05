@@ -13,7 +13,7 @@ from .print_util import print_clr
 from colorama import Style, Fore
 
 DEFAULT_TARGET_BROWSER = "chrome"
-DEFAULT_CHROME_DRIVER_VERSION = "104.0.5112"
+DEFAULT_CHROME_DRIVER_VERSION = "104.0.5112.79"
 DEFAULT_FIREFOX_DRIVER_VERSION = "v0.29.0"
 
 
