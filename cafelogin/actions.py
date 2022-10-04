@@ -13,8 +13,8 @@ from .print_util import print_clr
 from colorama import Style, Fore
 
 DEFAULT_TARGET_BROWSER = "chrome"
-DEFAULT_CHROME_DRIVER_VERSION = "104.0.5112.79"
-DEFAULT_FIREFOX_DRIVER_VERSION = "v0.29.0"
+DEFAULT_CHROME_DRIVER_VERSION = ""  # default to latest chrome driver
+DEFAULT_FIREFOX_DRIVER_VERSION = ""  # default to latest firefox driver
 
 
 @contextmanager
@@ -26,23 +26,27 @@ def create_webdriver_context(
     if target_browser == "firefox":
         options = webdriver.firefox.options.Options()
         options.headless = True
+        driver_path = GeckoDriverManager(
+            version=firefox_driver_version,
+            cache_valid_range=100,
+        ).install()
+        print(f"Using driver: {driver_path}")
         with webdriver.Firefox(
             options=options,
-            executable_path=GeckoDriverManager(
-                version=firefox_driver_version,
-                cache_valid_range=100,
-            ).install(),
+            executable_path=driver_path,
         ) as d:
             yield d
     else:  # default target
         options = webdriver.chrome.options.Options()
         options.headless = True
+        driver_path = ChromeDriverManager(
+            version=chrome_driver_version,
+            cache_valid_range=100,
+        ).install()
+        print(f"Using driver: {driver_path}")
         with webdriver.Chrome(
             options=options,
-            executable_path=ChromeDriverManager(
-                version=chrome_driver_version,
-                cache_valid_range=100,
-            ).install(),
+            executable_path=driver_path,
         ) as d:
             yield d
 
