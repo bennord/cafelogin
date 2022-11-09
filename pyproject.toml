@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cafelogin"
-version = "0.2.2"
+version = "0.2.3"
 description = "Login to wifi portals commonly found at cafes."
 authors = ["Ben Nordstrom <bennord@gmail.com>"]
 readme = "README.md"
@@ -8,18 +8,18 @@ repository = "https://github.com/bennord/cafelogin"
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 selenium = "^3.14.1"
 webdriver-manager = "^3.8.3"
 ConfigArgParse = "^1.2.3"
 colorama = "^0.4.4"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^5.2"
-mypy = "^0.800"
-black = {version = "^22.6.0", allow-prereleases = true}
-pylint = "^2.6.0"
-rope = "^0.18.0"
+pytest = "^7.2.0"
+mypy = "^0.990"
+black = "^22.10.0"
+pylint = "^2.15.5"
+rope = "^1.4.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
