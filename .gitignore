@@ -1,4 +1,5 @@
 geckodriver.log
+.vscode/
 
 # tool caches
 .mypy_cache/

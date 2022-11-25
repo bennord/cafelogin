@@ -1,4 +1,4 @@
 from cafelogin.console import run
 import cafelogin.actions as actions
 
-__version__ = "0.2.2"
+__version__ = "0.2.4"
