@@ -14,6 +14,7 @@ DEFAULT_TARGET_BROWSER = "chrome"
 DEFAULT_CHROME_DRIVER_VERSION = ""  # default to latest chrome driver
 DEFAULT_FIREFOX_DRIVER_VERSION = ""  # default to latest firefox driver
 DEFAULT_DETECT_PORTAL_URL = "http://detectportal.firefox.com/"
+DEFAULT_DETECT_PORTAL_EXPECTED_RESPONSE = "success"
 
 
 @contextmanager
@@ -50,9 +51,9 @@ def create_webdriver_context(
             yield d
 
 
-def portal_connected(detect_portal_url: str):
+def portal_connected(detect_portal_url: str, detect_portal_expected_response: str):
     response = requests.get(detect_portal_url)
-    return response.ok and response.text.strip() == "success"
+    return response.ok and detect_portal_expected_response in response.text.strip()
 
 
 def print_portal_status(connected: bool):
@@ -68,23 +69,39 @@ def print_portal_status(connected: bool):
         )
 
 
-def portal_connected_print_if_changed(detect_portal_url: str, previous_state: bool):
-    current_state = portal_connected(detect_portal_url)
+def portal_connected_print_if_changed(
+    detect_portal_url: str, detect_portal_expected_response: str, previous_state: bool
+):
+    current_state = portal_connected(
+        detect_portal_url=detect_portal_url,
+        detect_portal_expected_response=detect_portal_expected_response,
+    )
     if current_state != previous_state:
         print_portal_status(current_state)
     return current_state
 
 
 def ensure_portal_connection(
-    driver: WebDriver, detect_portal_url: str = DEFAULT_DETECT_PORTAL_URL
+    driver: WebDriver,
+    detect_portal_url: str = DEFAULT_DETECT_PORTAL_URL,
+    detect_portal_expected_response: str = DEFAULT_DETECT_PORTAL_EXPECTED_RESPONSE,
 ):
-    if portal_connected(detect_portal_url):
+    if portal_connected(
+        detect_portal_url=detect_portal_url,
+        detect_portal_expected_response=detect_portal_expected_response,
+    ):
         print("Already connected")
         return
 
-    login.try_login(driver=driver, detect_portal_url=detect_portal_url)
+    login.try_login(
+        driver=driver,
+        detect_portal_url=detect_portal_url,
+    )
 
-    if portal_connected(detect_portal_url):
+    if portal_connected(
+        detect_portal_url=detect_portal_url,
+        detect_portal_expected_response=detect_portal_expected_response,
+    ):
         print("Login succeeded")
     else:
         print("Login failed")
@@ -94,6 +111,7 @@ def watch_portal_connection(
     driver: WebDriver,
     watch_interval: float,
     detect_portal_url: str = DEFAULT_DETECT_PORTAL_URL,
+    detect_portal_expected_response: str = DEFAULT_DETECT_PORTAL_EXPECTED_RESPONSE,
 ):
     print_clr(
         f"{Style.BRIGHT}Checking portal every ",
@@ -101,19 +119,27 @@ def watch_portal_connection(
         f"{Style.BRIGHT}seconds.  Ctrl-c to exit.",
     )
 
-    connected = portal_connected(detect_portal_url)
+    connected = portal_connected(
+        detect_portal_url=detect_portal_url,
+        detect_portal_expected_response=detect_portal_expected_response,
+    )
     print_portal_status(connected)
 
     while True:
         connected = portal_connected_print_if_changed(
             detect_portal_url=detect_portal_url,
+            detect_portal_expected_response=detect_portal_expected_response,
             previous_state=connected,
         )
 
         if not connected:
-            login.try_login(driver=driver)
+            login.try_login(
+                driver=driver,
+                detect_portal_url=detect_portal_url,
+            )
             connected = portal_connected_print_if_changed(
                 detect_portal_url=detect_portal_url,
+                detect_portal_expected_response=detect_portal_expected_response,
                 previous_state=connected,
             )
             if connected:

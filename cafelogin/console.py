@@ -73,6 +73,11 @@ def run():
         default=actions.DEFAULT_DETECT_PORTAL_URL,
         help="The url to use to check for captive portal redirects.",
     )
+    parser.add_argument(
+        "--detect-portal-expected-response",
+        default=actions.DEFAULT_DETECT_PORTAL_EXPECTED_RESPONSE,
+        help="The string expected in a successful portal url response.",
+    )
 
     args, unused_args = parser.parse_known_args()
 
@@ -87,6 +92,7 @@ def run():
                     driver=driver,
                     watch_interval=args.watch_interval,
                     detect_portal_url=args.detect_portal_url,
+                    detect_portal_expected_response=args.detect_portal_expected_response,
                 )
             else:
                 actions.ensure_portal_connection(driver=driver)
