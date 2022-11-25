@@ -68,6 +68,11 @@ def run():
         default=20,
         help="The frequency with which to watch for portal changes.",
     )
+    parser.add_argument(
+        "--detect-portal-url",
+        default=actions.DEFAULT_DETECT_PORTAL_URL,
+        help="The url to use to check for captive portal redirects.",
+    )
 
     args, unused_args = parser.parse_known_args()
 
@@ -79,7 +84,9 @@ def run():
         ) as driver:
             if args.watch:
                 actions.watch_portal_connection(
-                    driver=driver, watch_interval=args.watch_interval
+                    driver=driver,
+                    watch_interval=args.watch_interval,
+                    detect_portal_url=args.detect_portal_url,
                 )
             else:
                 actions.ensure_portal_connection(driver=driver)
